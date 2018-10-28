@@ -1,5 +1,6 @@
 import http from 'http';
 import Primus from 'primus';
+import { registerSpark, unregisterSpark } from './routing';
 
 export const startHttpServer = (port) => {
 
@@ -20,7 +21,14 @@ export const startWsServer = (httpServer, onData) => {
 
     primus.on('connection', (spark) => {
 
+        registerSpark(spark);
         spark.on('data', onData);
+
+    });
+
+    primus.on('disconnection', (spark) => {
+
+        unregisterSpark(spark);
 
     });
 

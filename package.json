@@ -8,6 +8,8 @@
     "test": "NODE_ENV=development jest"
   },
   "dependencies": {
+    "bluebird": "^3.5.2",
+    "lodash": "^4.17.11",
     "primus": "7.2.3",
     "sockjs": "0.3.19",
     "sockjs-client": "1.3.0"
@@ -24,7 +26,6 @@
     "eslint-import-resolver-babel-module": "4.0.0",
     "eslint-plugin-babel": "5.1.0",
     "eslint-plugin-import": "2.12.0",
-    "jest": "^23.6.0",
-    "supertest": "^3.3.0"
+    "jest": "^23.6.0"
   }
 }
