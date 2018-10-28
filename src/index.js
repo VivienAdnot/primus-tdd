@@ -1,24 +1,14 @@
-import http from 'http';
-import Primus from 'primus'
+import startWsServer from './server';
 
 const port = 8018;
 
-var server = http.createServer();
-server.listen(port, () => { `server is listening to ${port}`});
+const primusInstance = startWsServer(port, (data) => {
 
-const primus = new Primus(server, { transformer: 'sockjs'});
-
-primus.on('connection', (spark) => {
-
-    spark.on('data', (data) => {
-
-        console.log('socket server received', data);
-
-    });
+    console.log('index: socket server received', data);
 
 });
 
-const socket = new primus.Socket(`http://localhost:${port}`);
+const socket = new primusInstance.Socket(`http://localhost:${port}`);
 
 socket.on('open', () => {
 
