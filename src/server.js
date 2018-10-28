@@ -1,16 +1,22 @@
 import http from 'http';
 import Primus from 'primus';
 
-const startWsServer = (port, onData) => {
+export const startHttpServer = (port) => {
 
     const server = http.createServer();
     server.listen(port, () => {
 
-        console.log('server is listening to', port);
+        console.log('http server is listening to', port);
 
     });
 
-    const primus = new Primus(server, { transformer: 'sockjs' });
+    return server;
+
+};
+
+export const startWsServer = (httpServer, onData) => {
+
+    const primus = new Primus(httpServer, { transformer: 'sockjs' });
 
     primus.on('connection', (spark) => {
 
@@ -21,5 +27,3 @@ const startWsServer = (port, onData) => {
     return primus;
 
 };
-
-export default startWsServer;

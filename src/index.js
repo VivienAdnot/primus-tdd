@@ -1,8 +1,10 @@
-import startWsServer from './server';
+import { startHttpServer, startWsServer } from './server';
 
 const port = 8018;
 
-const primusInstance = startWsServer(port, (data) => {
+const httpServer = startHttpServer(8018);
+
+const primusInstance = startWsServer(httpServer, (data) => {
 
     console.log('index: socket server received', data);
 

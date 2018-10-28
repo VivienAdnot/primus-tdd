@@ -1,10 +1,36 @@
-import startWsServer from './server';
+import { startHttpServer, startWsServer } from './server';
 
 const port = 8018;
+let httpServer;
+let wsServer;
+let socket;
 
-const connect = (wsServer) => {
+let data = [];
 
-    const socket = new wsServer.Socket(`http://localhost:${port}`);
+beforeEach(() => {
+
+    data = [];
+    httpServer = startHttpServer(port);
+    wsServer = startWsServer(httpServer, (dataReceived) => {
+
+        console.log('server received', dataReceived);
+        data.push(dataReceived);
+
+    });
+
+});
+
+afterEach(() => {
+
+    socket.destroy();
+    wsServer.close();
+    httpServer.close();
+
+});
+
+const connect = () => {
+
+    socket = new wsServer.Socket(`http://localhost:${port}`);
 
     return new Promise((resolve) => {
 
@@ -17,7 +43,7 @@ const connect = (wsServer) => {
 
                 resolve();
 
-            }, 0);
+            }, 100);
 
         });
 
@@ -27,11 +53,7 @@ const connect = (wsServer) => {
 
 test('connection', () => {
 
-    const onData = jest.fn();
-
-    const wsServer = startWsServer(port, onData);
-
-    return connect(wsServer)
-    .then(() => expect(onData.mock.calls[0][0]).toBe('OK'));
+    return connect()
+    .then(() => expect(data.length).toBe(1));
 
 });
